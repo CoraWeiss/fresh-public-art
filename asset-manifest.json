@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/Public-Domain-Art-Browser/static/css/main.f855e6bc.css",
+    "main.js": "/Public-Domain-Art-Browser/static/js/main.ef446538.js",
+    "static/js/488.3a596922.chunk.js": "/Public-Domain-Art-Browser/static/js/488.3a596922.chunk.js",
+    "static/media/logo.svg": "/Public-Domain-Art-Browser/static/media/logo.6ce24c58023cc2f8fd88fe9d219db6c6.svg",
+    "index.html": "/Public-Domain-Art-Browser/index.html",
+    "main.f855e6bc.css.map": "/Public-Domain-Art-Browser/static/css/main.f855e6bc.css.map",
+    "main.ef446538.js.map": "/Public-Domain-Art-Browser/static/js/main.ef446538.js.map",
+    "488.3a596922.chunk.js.map": "/Public-Domain-Art-Browser/static/js/488.3a596922.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.f855e6bc.css",
+    "static/js/main.ef446538.js"
+  ]
+}
