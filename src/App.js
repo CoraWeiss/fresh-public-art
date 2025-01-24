@@ -1,63 +1,51 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import asciify from 'asciify-image';
 import './App.css';
 
 function App() {
-  const [artworks, setArtworks] = useState([]);
-  const [asciiArts, setAsciiArts] = useState({});
+  const [artwork, setArtwork] = useState(null);
 
   useEffect(() => {
-    const fetchArtworks = async () => {
+    const fetchRandomArtwork = async () => {
       try {
-        const response = await axios.get('https://www.wikiart.org/en/api/2/PaintingsByStyle?style=baroque');
-        console.log('Artworks fetched:', response.data.paintings);  // Log the fetched data
-        setArtworks(response.data.paintings);
+        // Fetch object IDs
+        const response = await axios.get('https://collectionapi.metmuseum.org/public/collection/v1/search?hasImages=true&q=baroque');
+        const objectIDs = response.data.objectIDs;
+        
+        // Select a random object ID
+        const randomIndex = Math.floor(Math.random() * objectIDs.length);
+        const randomObjectID = objectIDs[randomIndex];
+        
+        // Fetch artwork details
+        const artworkResponse = await axios.get(`https://collectionapi.metmuseum.org/public/collection/v1/objects/${randomObjectID}`);
+        setArtwork(artworkResponse.data);
       } catch (error) {
-        console.error('Error fetching artworks:', error);
+        console.error('Error fetching artwork:', error);
       }
     };
 
-    fetchArtworks();
+    fetchRandomArtwork();
   }, []);
-
-  useEffect(() => {
-    const generateAsciiArt = async (url) => {
-      const options = {
-        fit: 'box',
-        width: 50,
-        height: 50,
-      };
-      try {
-        const asciiArt = await asciify(url, options);
-        console.log('ASCII art generated:', asciiArt);  // Log the generated ASCII art
-        setAsciiArts(prevState => ({ ...prevState, [url]: asciiArt }));
-      } catch (error) {
-        console.error('Error generating ASCII art:', error);
-      }
-    };
-
-    artworks.forEach(art => generateAsciiArt(art.image));
-  }, [artworks]);
 
   return (
     <div className="App">
       <header className="App-header">
-        <h1>Baroque Art and ASCII Art</h1>
-        {artworks.map(art => (
-          <div key={art.id} className="art-container">
+        <h1>Random Baroque Artwork</h1>
+        <div className="art-container">
+          {artwork ? (
             <div>
-              <img src={art.image} alt={art.title} className="art-image" />
-              <p>{art.artistName}</p>
+              <img src={artwork.primaryImageSmall} alt={artwork.title} className="art-image" />
+              <p>{artwork.artistDisplayName}</p>
+              <p>{artwork.title}</p>
             </div>
-            <div>
-              <pre>{asciiArts[art.image]}</pre>
-            </div>
-          </div>
-        ))}
+          ) : (
+            <p>Loading...</p>
+          )}
+        </div>
       </header>
     </div>
   );
 }
 
 export default App;
+
